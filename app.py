@@ -93,7 +93,7 @@ def admin(username, password):
     if user is not None:
         click.echo('Updating user...')
         user.username = username
-        user.set_passwrod(password)
+        user.set_password(password)
     else:
         click.echo('Creating user...')
         user = User(username=username, name='Admin')
@@ -118,7 +118,7 @@ def inject_user():
 @app.errorhandler(404)
 def page_not_found(e):
     user = User.query.first()
-    return render_template('404.html')
+    return render_template('404.html'), 404
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -157,7 +157,7 @@ def edit(movie_id):
     if request.method == 'POST':
         title = request.form['title']
         year = request.form['year']
-
+        
         if not title or not year or len(year) > 4 or len(title) > 60:
             flash('Invalid input.')
             return redirect(url_for('edit', movie_id = movie_id))
@@ -165,7 +165,7 @@ def edit(movie_id):
         movie.title = title
         movie.year = year
         db.session.commit()
-        flash('Item update.')
+        flash('Item updated.')
         return redirect(url_for('index'))
 
     return render_template('edit.html', movie=movie)
@@ -194,7 +194,7 @@ def login():
 
         if username == user.username and user.validate_password(password):
             login_user(user)
-            flash('login success.')
+            flash('Login success.')
             return redirect(url_for('index'))
         
         flash('Invalid username or password.')
@@ -223,7 +223,7 @@ def settings():
         current_user.name = name
 
         db.session.commit()
-        flash('Settings update.')
+        flash('Settings updated.')
         return redirect(url_for('index'))
 
     return render_template('settings.html')    

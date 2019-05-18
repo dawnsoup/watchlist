@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- 插入到页面标题上方 -->
-{% for message in get_flashed_messages() %}
-    <div class="alert">{{ message }}</div>
-{% endfor %}
+
 <h3>Login</h3>
 <form method="post">
     Username<br>
